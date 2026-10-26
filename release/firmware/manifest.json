@@ -9,12 +9,12 @@
                       "full":  {
                                    "file":  "esp-usb-wifi-esp32s3-full.bin",
                                    "offset":  "0x0",
-                                   "sha256":  "5c6ea4de161d64a7adb185983cfae1f916337bb4b88e643c337360699df21917"
+                                   "sha256":  "9b02b65b434b96c0d397dd4285e33119f26945b1f41ab7bac28d7e1786cff49c"
                                },
                       "app":  {
                                   "file":  "esp-usb-wifi-esp32s3-app.bin",
                                   "offset":  "0x10000",
-                                  "sha256":  "ac19a778327486066adde79a2027c3a4edffd486d608e0b03ee5a3635099efd5"
+                                  "sha256":  "74755d7bbab83cc5fd4170310880ef7cf0a1c013b68949539eab33599ba637b3"
                               }
                   },
                   {
@@ -23,12 +23,12 @@
                       "full":  {
                                    "file":  "esp-usb-wifi-esp32s2-full.bin",
                                    "offset":  "0x0",
-                                   "sha256":  "c0e51c9ec26305f9e0aef263744685a5f264c5edc3ebdd769248a0a8d3bca690"
+                                   "sha256":  "e498c96c802036de0769f6332d197ca11b378b11492139f463b60a67ce38fdb6"
                                },
                       "app":  {
                                   "file":  "esp-usb-wifi-esp32s2-app.bin",
                                   "offset":  "0x10000",
-                                  "sha256":  "fce29beee288ee8543085221d09a91f3d48d05dac343e56fba6991f22ae39df5"
+                                  "sha256":  "e422e7da6c11185bd001f7702f7eafdb8049ccb61ff7320bc3d95d5fc8fce123"
                               }
                   }
               ]

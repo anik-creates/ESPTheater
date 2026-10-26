@@ -59,3 +59,19 @@ replaces the application, so settings survive.
 
 The ESP32-S2/S3 USB is Full-Speed (12 Mbit/s raw). With NCM framing and TinyUSB's single transmit buffer,
 real-world throughput is ~6–7 Mbit/s in each direction.
+
+## Android flasher
+
+`android/app/src/main/java/com/aniksarker/esptheater/`, plain Java against the Android framework only.
+
+* `UsbSerial.java` contains USB host serial drivers: CDC-ACM (ESP native USB, CH343/CH9102), WCH CH340/CH341 and
+  Silicon Labs CP210x (vendor control requests as in the Linux kernel drivers).
+* `EspLoader.java` implements the ROM serial bootloader protocol without a flasher stub: SLIP framing, SYNC, chip
+  detection (GET_SECURITY_INFO chip ID, else the magic register at `0x40001000`), SPI attach/params,
+  compressed writes (`FLASH_DEFL_*`, 1 KB blocks, zlib), ROM MD5 verification, and the reset sequences
+  (classic DTR/RTS, USB-Serial/JTAG, RTC watchdog reset for USB-OTG ROM mode). It doesn't depend on Android and is
+  tested against real boards on a PC through a serial bridge.
+* A running adapter is put into its bootloader with the 1200-baud touch, after which the app waits for the
+  bootloader USB device (`303A:1001` or `303A:0002`) and asks for permission again.
+* The APK is built without Gradle (`scripts/build_android.ps1`: aapt2, javac, d8, zipalign, apksigner). Assets are
+  added to the zip by the script because aapt2 on Windows writes asset paths with backslashes.

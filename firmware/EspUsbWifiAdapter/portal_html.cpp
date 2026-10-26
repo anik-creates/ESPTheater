@@ -50,11 +50,16 @@ select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;b
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .msg{font-size:13px;color:var(--muted)}
 .ver{color:var(--muted);font-size:12px;text-align:center;margin-top:6px}
+.credit{color:var(--muted);font-size:12px;text-align:center;margin-top:2px}
+.credit a{color:var(--accent);text-decoration:none}
+body::before{content:"Anik Sarker";position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font:700 64px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);opacity:.045;white-space:nowrap;pointer-events:none;z-index:0}
+main{position:relative;z-index:1}
 </style>
 </head>
 <body>
 <main>
   <h1>ESP USB Wi-Fi Setup</h1>
+  <div class="sub">ESPTheater &middot; developed by Anik Sarker</div>
   <div class="sub" id="apname">ESP32-S3 Wi-Fi to USB adapter</div>
 
   <div class="card status">
@@ -99,6 +104,7 @@ select{font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;b
     </div>
   </details>
   <div class="ver" id="ver"></div>
+  <div class="credit">&copy; 2026 Anik Sarker &middot; <a href="https://github.com/anik-creates/ESPTheater">github.com/anik-creates/ESPTheater</a></div>
 </main>
 
 <template id="formTpl">

@@ -23,13 +23,21 @@ jobs:
           $v = (Select-String -Path firmware/EspUsbWifiAdapter/version.h -Pattern 'FW_VERSION\s+"([^"]+)"').Matches[0].Groups[1].Value
           if ("v$v" -ne "${{ github.ref_name }}") { throw "Tag ${{ github.ref_name }} does not match version.h ($v)" }
 
-      - name: Build firmware and flasher
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build firmware, Windows flasher and Android flasher
         shell: pwsh
+        env:
+          ESPTHEATER_KEYSTORE_BASE64: ${{ secrets.ESPTHEATER_KEYSTORE_BASE64 }}
+          ESPTHEATER_KEYSTORE_PASSWORD: ${{ secrets.ESPTHEATER_KEYSTORE_PASSWORD }}
         run: ./scripts/build.ps1 -InstallCore -ArduinoCli (Get-Command arduino-cli).Source
 
       - uses: actions/upload-artifact@v4
         with:
-          name: esp-usb-wifi-adapter
+          name: esptheater
           path: build/dist/*.zip
 
       - name: Publish GitHub release
@@ -39,6 +47,7 @@ jobs:
           generate_release_notes: true
           files: |
             build/dist/*.zip
-            release/ESP-USB-WiFi-Flasher.exe
+            release/ESPTheater-Flasher.exe
+            release/ESPTheater-Flasher.apk
             release/firmware/*.bin
             release/SHA256SUMS.txt

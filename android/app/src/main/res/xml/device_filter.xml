@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Espressif native USB (adapter firmware, bootloader, USB-Serial/JTAG) -->
+    <usb-device vendor-id="12346" />
+    <!-- WCH CH340 / CH341 / CH343 / CH9102 -->
+    <usb-device vendor-id="6790" />
+    <!-- Silicon Labs CP210x -->
+    <usb-device vendor-id="4292" />
+</resources>

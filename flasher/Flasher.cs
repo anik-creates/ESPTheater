@@ -1,4 +1,4 @@
-// ESP USB Wi-Fi Adapter - Windows flasher.
+// ESPTheater - ESP USB Wi-Fi Adapter - Windows flasher. Developed by Anik Sarker.
 //
 // One self-contained EXE: esptool.exe and the firmware images are embedded as resources and unpacked
 // to %TEMP% on first use. Written for the C# 5 compiler that ships with Windows
@@ -20,10 +20,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 
-[assembly: AssemblyTitle("ESP USB Wi-Fi Adapter Flasher")]
-[assembly: AssemblyProduct("ESP USB Wi-Fi Adapter")]
+[assembly: AssemblyTitle("ESPTheater Flasher")]
+[assembly: AssemblyCompany("Anik Sarker")]
+[assembly: AssemblyProduct("ESPTheater - ESP USB Wi-Fi Adapter")]
 [assembly: AssemblyDescription("Flashes the ESP USB Wi-Fi Adapter firmware onto ESP32-S2 / ESP32-S3 boards")]
-[assembly: AssemblyCopyright("MIT License")]
+[assembly: AssemblyCopyright("Copyright (c) 2026 Anik Sarker. MIT License.")]
 [assembly: AssemblyVersion(EspUsbWifiFlasher.BuildInfo.Version + ".0")]
 [assembly: AssemblyFileVersion(EspUsbWifiFlasher.BuildInfo.Version + ".0")]
 
@@ -106,6 +107,8 @@ namespace EspUsbWifiFlasher
     static class BuildInfo
     {
         public const string Version = "1.0.0";
+        public const string Author = "Anik Sarker";
+        public const string Repo = "https://github.com/anik-creates/ESPTheater";
     }
 
     // ---------------------------------------------------------------- embedded payload
@@ -542,11 +545,11 @@ namespace EspUsbWifiFlasher
                 else if (a == "--erase") { job.EraseAll = true; }
                 else
                 {
-                    Console.WriteLine("ESP USB Wi-Fi Adapter Flasher v" + BuildInfo.Version);
+                    Console.WriteLine("ESPTheater Flasher v" + BuildInfo.Version + "  -  developed by " + BuildInfo.Author);
                     Console.WriteLine();
-                    Console.WriteLine("Usage: ESP-USB-WiFi-Flasher.exe                   (opens the window)");
-                    Console.WriteLine("       ESP-USB-WiFi-Flasher.exe --list            (lists serial ports)");
-                    Console.WriteLine("       ESP-USB-WiFi-Flasher.exe --port COMx [--chip auto|esp32s3|esp32s2]");
+                    Console.WriteLine("Usage: ESPTheater-Flasher.exe                   (opens the window)");
+                    Console.WriteLine("       ESPTheater-Flasher.exe --list            (lists serial ports)");
+                    Console.WriteLine("       ESPTheater-Flasher.exe --port COMx [--chip auto|esp32s3|esp32s2]");
                     Console.WriteLine("                                [--update] [--erase] [--baud 921600]");
                     Console.WriteLine();
                     Console.WriteLine("  --update  only replace the application, keeping Wi-Fi credentials and settings");
@@ -597,7 +600,7 @@ namespace EspUsbWifiFlasher
 
         public MainForm()
         {
-            Text = "ESP USB Wi-Fi Adapter Flasher  v" + BuildInfo.Version;
+            Text = "ESPTheater Flasher  v" + BuildInfo.Version + "  -  by " + BuildInfo.Author;
             Font = new Font("Segoe UI", 9f);
             AutoScaleMode = AutoScaleMode.Dpi;
             AutoScaleDimensions = new SizeF(96f, 96f);
@@ -621,9 +624,17 @@ namespace EspUsbWifiFlasher
                 Text = "Turn an ESP32-S3 / ESP32-S2 board into a USB Wi-Fi adapter",
                 Font = new Font("Segoe UI Semibold", 12f),
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 8),
+                Margin = new Padding(0, 0, 0, 0),
             };
             root.Controls.Add(title);
+            root.RowStyles.Insert(1, new RowStyle(SizeType.AutoSize));
+            root.Controls.Add(new Label
+            {
+                Text = "ESPTheater  \u00B7  developed by " + BuildInfo.Author,
+                ForeColor = SystemColors.GrayText,
+                AutoSize = true,
+                Margin = new Padding(2, 0, 0, 8),
+            });
 
             // 1. Board
             var boardGroup = new GroupBox { Text = "1. Board", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(10) };
@@ -717,11 +728,21 @@ namespace EspUsbWifiFlasher
                 + "USB-to-serial chip (or a fixed serial/JTAG unit), so the PC can only ever see a COM port.",
                 "Why only ESP32-S2 / ESP32-S3?", MessageBoxButtons.OK, MessageBoxIcon.Information);
             root.Controls.Add(footer);
+            root.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            var credit = new LinkLabel
+            {
+                Text = "\u00A9 2026 " + BuildInfo.Author + "  \u00B7  " + BuildInfo.Repo,
+                AutoSize = true,
+                Margin = new Padding(0, 4, 0, 0),
+            };
+            credit.LinkArea = new LinkArea(credit.Text.Length - BuildInfo.Repo.Length, BuildInfo.Repo.Length);
+            credit.LinkClicked += (s, e) => OpenUrl(BuildInfo.Repo);
+            root.Controls.Add(credit);
 
             Shown += (s, e) =>
             {
                 RefreshPorts();
-                Log("ESP USB Wi-Fi Adapter Flasher v" + BuildInfo.Version);
+                Log("ESPTheater Flasher v" + BuildInfo.Version + "  -  developed by " + BuildInfo.Author);
                 Log("1) Plug the board in (any USB port of the board works for flashing).");
                 Log("2) Pick its port, click Flash.");
                 Log("3) Afterwards, connect the board's native USB port (often labelled \"USB\") to the PC.");
@@ -872,7 +893,8 @@ namespace EspUsbWifiFlasher
                 + "LED\r\n"
                 + "Blue blink: choose a Wi-Fi network.  Yellow: connecting.  Red: Wi-Fi has no internet.  "
                 + "Cyan: online but no PC on the USB port.  Green: all good.  The LED GPIO can be changed in the setup page's "
-                + "Settings if your board's LED stays dark.",
+                + "Settings if your board's LED stays dark.\r\n\r\n"
+                + "ESPTheater v" + BuildInfo.Version + "  -  developed by " + BuildInfo.Author + "\r\n" + BuildInfo.Repo,
                 "Help", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

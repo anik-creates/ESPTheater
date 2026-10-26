@@ -3,7 +3,7 @@
 This project's own source code is MIT licensed (see `LICENSE`). The distributed binaries also contain the
 following components.
 
-## Flasher (`ESP-USB-WiFi-Flasher.exe`)
+## Windows flasher (`ESPTheater-Flasher.exe`)
 
 | Component | License | Source |
 |---|---|---|
@@ -12,6 +12,10 @@ following components.
 esptool is Copyright (C) Fredrik Ahlberg, Angus Gratton, Espressif Systems (Shanghai) CO LTD and other
 contributors. The complete corresponding source code is available at the URL above, matching the version
 printed by the flasher's log (`esptool v...`).
+
+## Android flasher (`ESPTheater-Flasher.apk`)
+
+No third-party code: it uses only the Android framework. The firmware images it contains are covered below.
 
 ## Firmware images (`release/firmware/*.bin`)
 

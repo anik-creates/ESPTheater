@@ -47,7 +47,7 @@ void setup()
   USBSerial.begin();
   USB.VID(0x303A);
   USB.PID(0x4001);
-  USB.manufacturerName("Espressif");
+  USB.manufacturerName("Anik Sarker");
   USB.productName(FW_NAME);
   USB.firmwareVersion(0x0100);
   USB.begin();

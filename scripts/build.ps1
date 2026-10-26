@@ -1,17 +1,19 @@
 <#
 .SYNOPSIS
-    Builds the firmware for every supported chip and the Windows flasher.
+    Builds everything: the firmware for every supported chip, the Windows flasher and the Android flasher.
 
 .DESCRIPTION
     Outputs (committed to the repo so a plain "Download ZIP" from GitHub is ready to use):
-      release/ESP-USB-WiFi-Flasher.exe              - flasher with esptool and all firmware embedded
+      release/ESPTheater-Flasher.exe                - Windows flasher, esptool and all firmware embedded
+      release/ESPTheater-Flasher.apk                - Android flasher, all firmware embedded
       release/firmware/esp-usb-wifi-<chip>-full.bin - complete image, flash at 0x0
       release/firmware/esp-usb-wifi-<chip>-app.bin  - application only, flash at 0x10000 (keeps settings)
       release/firmware/manifest.json, SHA256SUMS.txt
-    plus build/dist/ESP-USB-WiFi-Adapter-v<version>-windows.zip for GitHub releases.
+    plus build/dist/ESPTheater-v<version>.zip for GitHub releases.
 
-    Needs arduino-cli with the esp32 core 3.3.2 (the Arduino IDE 2 bundles arduino-cli) and the
-    .NET Framework 4 C# compiler that ships with Windows.
+    Needs arduino-cli with the esp32 core 3.3.2 (the Arduino IDE 2 bundles arduino-cli), the
+    .NET Framework 4 C# compiler that ships with Windows, and for the Android app the Android SDK + a JDK
+    (see scripts/build_android.ps1; skip with -SkipAndroid).
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File scripts\build.ps1
@@ -19,6 +21,7 @@
 param(
     [string]$ArduinoCli = "",
     [switch]$SkipFlasher,
+    [switch]$SkipAndroid,
     [switch]$InstallCore
 )
 
@@ -109,7 +112,7 @@ if (-not $SkipFlasher) {
     $src = Join-Path $Root 'flasher\Flasher.cs'
     (Get-Content $src -Raw) -match 'public const string Version = "([^"]+)"' | Out-Null
     if ($Matches[1] -ne $Version) { throw "flasher\Flasher.cs BuildInfo.Version ($($Matches[1])) must match version.h ($Version)" }
-    $exe = Join-Path $Release 'ESP-USB-WiFi-Flasher.exe'
+    $exe = Join-Path $Release 'ESPTheater-Flasher.exe'
     $cscArgs = @('/nologo', '/target:winexe', '/optimize+', "/out:$exe", "/win32icon:$(Join-Path $Root 'flasher\app.ico')",
                  '/r:System.dll', '/r:System.Core.dll', '/r:System.Drawing.dll', '/r:System.Windows.Forms.dll', '/r:System.Management.dll',
                  "/resource:$($esptool.FullName),esptool.exe")
@@ -121,18 +124,24 @@ if (-not $SkipFlasher) {
     Invoke-Checked $csc $cscArgs
 }
 
+if (-not $SkipAndroid) {
+    Write-Host "`n== Building the Android flasher" -ForegroundColor Cyan
+    & (Join-Path $PSScriptRoot 'build_android.ps1')
+    if (-not $?) { throw 'Android build failed' }
+}
+
 Push-Location $Release
 try {
-    Get-ChildItem -Recurse -File -Include *.exe, *.bin, manifest.json |
+    Get-ChildItem -Recurse -File -Include *.exe, *.apk, *.bin, manifest.json |
         ForEach-Object { "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower(), (Resolve-Path -Relative $_.FullName).TrimStart('.', '\').Replace('\', '/') } |
         Set-Content -Encoding ASCII (Join-Path $Release 'SHA256SUMS.txt')
 } finally { Pop-Location }
 
 $dist = Join-Path $Build 'dist'
 New-Item -ItemType Directory -Force -Path $dist | Out-Null
-$zip = Join-Path $dist "ESP-USB-WiFi-Adapter-v$Version-windows.zip"
+$zip = Join-Path $dist "ESPTheater-v$Version.zip"
 if (Test-Path $zip) { Remove-Item $zip }
-$staging = Join-Path $Build "zip\ESP-USB-WiFi-Adapter-v$Version"
+$staging = Join-Path $Build "zip\ESPTheater-v$Version"
 if (Test-Path $staging) { Remove-Item -Recurse -Force $staging }
 New-Item -ItemType Directory -Force -Path $staging | Out-Null
 Copy-Item -Recurse (Join-Path $Release '*') $staging
