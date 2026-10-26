@@ -1,0 +1,12 @@
+# Build output (release/ is committed on purpose so "Download ZIP" is ready to use)
+build/
+*.elf
+*.map
+*.pdb
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+__pycache__/

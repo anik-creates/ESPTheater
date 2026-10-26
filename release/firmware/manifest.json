@@ -1,0 +1,35 @@
+﻿{
+    "name":  "ESP USB Wi-Fi Adapter",
+    "version":  "1.0.0",
+    "core":  "arduino-esp32 3.3.2",
+    "chips":  [
+                  {
+                      "chip":  "esp32s3",
+                      "name":  "ESP32-S3",
+                      "full":  {
+                                   "file":  "esp-usb-wifi-esp32s3-full.bin",
+                                   "offset":  "0x0",
+                                   "sha256":  "5c6ea4de161d64a7adb185983cfae1f916337bb4b88e643c337360699df21917"
+                               },
+                      "app":  {
+                                  "file":  "esp-usb-wifi-esp32s3-app.bin",
+                                  "offset":  "0x10000",
+                                  "sha256":  "ac19a778327486066adde79a2027c3a4edffd486d608e0b03ee5a3635099efd5"
+                              }
+                  },
+                  {
+                      "chip":  "esp32s2",
+                      "name":  "ESP32-S2",
+                      "full":  {
+                                   "file":  "esp-usb-wifi-esp32s2-full.bin",
+                                   "offset":  "0x0",
+                                   "sha256":  "c0e51c9ec26305f9e0aef263744685a5f264c5edc3ebdd769248a0a8d3bca690"
+                               },
+                      "app":  {
+                                  "file":  "esp-usb-wifi-esp32s2-app.bin",
+                                  "offset":  "0x10000",
+                                  "sha256":  "fce29beee288ee8543085221d09a91f3d48d05dac343e56fba6991f22ae39df5"
+                              }
+                  }
+              ]
+}

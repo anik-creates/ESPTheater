@@ -1,0 +1,6 @@
+fce29beee288ee8543085221d09a91f3d48d05dac343e56fba6991f22ae39df5  firmware/esp-usb-wifi-esp32s2-app.bin
+c0e51c9ec26305f9e0aef263744685a5f264c5edc3ebdd769248a0a8d3bca690  firmware/esp-usb-wifi-esp32s2-full.bin
+ac19a778327486066adde79a2027c3a4edffd486d608e0b03ee5a3635099efd5  firmware/esp-usb-wifi-esp32s3-app.bin
+5c6ea4de161d64a7adb185983cfae1f916337bb4b88e643c337360699df21917  firmware/esp-usb-wifi-esp32s3-full.bin
+db213ad1f6129a07e38eef45ae5566148f1dbe4e8762701f2e8d07334726fe89  firmware/manifest.json
+894661bfc587c3fc46eb1df263c631de68eb2c50a05e2d46e0bb68a7e7472ade  ESP-USB-WiFi-Flasher.exe

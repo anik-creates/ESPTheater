@@ -1,0 +1,44 @@
+name: Build and release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: arduino/setup-arduino-cli@v2
+
+      - name: Check the tag matches the firmware version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $v = (Select-String -Path firmware/EspUsbWifiAdapter/version.h -Pattern 'FW_VERSION\s+"([^"]+)"').Matches[0].Groups[1].Value
+          if ("v$v" -ne "${{ github.ref_name }}") { throw "Tag ${{ github.ref_name }} does not match version.h ($v)" }
+
+      - name: Build firmware and flasher
+        shell: pwsh
+        run: ./scripts/build.ps1 -InstallCore -ArduinoCli (Get-Command arduino-cli).Source
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: esp-usb-wifi-adapter
+          path: build/dist/*.zip
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            build/dist/*.zip
+            release/ESP-USB-WiFi-Flasher.exe
+            release/firmware/*.bin
+            release/SHA256SUMS.txt
